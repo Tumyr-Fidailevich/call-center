@@ -20,3 +20,15 @@ find_package(glog CONFIG REQUIRED)
 
 include_directories(${Boost_INCLUDE_DIRS})
 target_link_libraries(CallCenterExec PRIVATE CallCenterLib ${Boost_LIBRARIES} nlohmann_json::nlohmann_json glog::glog)
+
+#option(BUILD_TESTS "Build tests" OFF)
+#
+#if (BUILD_TESTS)
+set(TEST_SOURCES test/test.cpp)
+
+add_executable(call_center_test ${TEST_SOURCES})
+find_package(GTest REQUIRED)
+target_link_libraries(call_center_test PRIVATE CallCenterLib GTest::gmock GTest::gtest GTest::gmock_main GTest::gtest_main)
+add_test(NAME CallCenterTest COMMAND call_center_test)
+
+#endif ()
