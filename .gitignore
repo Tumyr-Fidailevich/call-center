@@ -1,0 +1,9 @@
+/cmake-build-debug
+/obsidian
+.idea
+*.pdf
+*.json
+*.txt
+!vcpkg.json
+!CMakeLists.txt
+*.log
