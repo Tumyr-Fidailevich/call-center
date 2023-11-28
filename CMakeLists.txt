@@ -13,6 +13,7 @@ target_precompile_headers(CallCenterLib PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/incl
 
 add_executable(CallCenterExec src/main.cpp)
 
+add_executable(ClientExec client/client.cpp)
 
 find_package(nlohmann_json REQUIRED)
 find_package(Boost REQUIRED)
@@ -20,7 +21,7 @@ find_package(glog CONFIG REQUIRED)
 
 include_directories(${Boost_INCLUDE_DIRS})
 target_link_libraries(CallCenterExec PRIVATE CallCenterLib ${Boost_LIBRARIES} nlohmann_json::nlohmann_json glog::glog)
-
+target_link_libraries(ClientExec PRIVATE ${Boost_LIBRARIES})
 #option(BUILD_TESTS "Build tests" OFF)
 #
 #if (BUILD_TESTS)
