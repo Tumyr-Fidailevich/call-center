@@ -14,15 +14,6 @@ public:
 
 	CDR& getCDR();
 
-	enum class Status
-	{
-		OK,
-		Duplicate,
-		Overload,
-		Timeout,
-		Interrupted
-	};
-
 private:
 
 	std::string setUniqueId();

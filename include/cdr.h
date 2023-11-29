@@ -7,6 +7,14 @@ using namespace boost::posix_time;
 
 struct CDR
 {
+	enum class Status
+	{
+		OK,
+		Duplicate,
+		Overload,
+		Timeout,
+		Interrupted
+	};
 	ptime connectionTime;
 	ptime responseTime;
 	ptime disconnectTime;
