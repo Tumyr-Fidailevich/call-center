@@ -3,7 +3,6 @@
 
 #include "pch.h"
 
-using namespace boost::posix_time;
 
 struct CDR
 {
@@ -15,21 +14,15 @@ struct CDR
 		Timeout,
 		Interrupted
 	};
-	ptime connectionTime;
-	ptime responseTime;
-	ptime disconnectTime;
-	int callDuration{0};
+
+	boost::posix_time::ptime connectionTime;
+	boost::posix_time::ptime responseTime;
+	boost::posix_time::ptime disconnectTime;
+	std::chrono::seconds callDuration;
 	int operatorId{0};
 	std::string callId{};
 	std::string phoneNumber{};
-	std::string status{};
-
-	void write();
+	Status status;
 };
-
-void CDR::write()
-{
-
-}
 
 #endif
