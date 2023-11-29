@@ -1,9 +1,4 @@
-#ifndef CALL_CENTER_RANDOM_H
-#define CALL_CENTER_RANDOM_H
-
-#include "pch.h"
-
-
+#include "utils.h"
 
 std::chrono::seconds getRandomCallDuration(const std::chrono::seconds &min, const std::chrono::seconds &max) {
 	std::random_device rd;
@@ -12,5 +7,3 @@ std::chrono::seconds getRandomCallDuration(const std::chrono::seconds &min, cons
 
 	return std::chrono::seconds(dist(gen));
 }
-
-#endif
