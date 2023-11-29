@@ -4,10 +4,10 @@ project(CallCenter)
 
 set(CMAKE_CXX_STANDARD 20)
 
-set(SOURCES src/http_server.cpp src/http_session.cpp src/call_center.cpp
-        src/operator.cpp src/call.cpp src/config.cpp src/utils.cpp)
-set(HEADERS include/http_server.h include/http_session.h include/call_center.h
-        include/operator.h include/call.h include/config.h include/cdr.h include/utils.h)
+set(SOURCES src/http_server.cpp src/http_session.cpp src/call_center.cpp src/call.cpp src/operator.cpp
+        src/config.cpp src/utils.cpp)
+set(HEADERS include/http_server.h include/http_session.h include/call_center.h include/call.h include/operator.h
+        include/cdr.h include/config.h include/utils.h)
 
 add_library(CallCenterLib STATIC ${SOURCES} ${HEADERS})
 target_include_directories(CallCenterLib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
@@ -18,7 +18,7 @@ add_executable(CallCenterExec src/main.cpp)
 add_executable(ClientExec client/client.cpp)
 
 find_package(nlohmann_json REQUIRED)
-find_package(Boost REQUIRED)
+find_package(Boost 1.83.0 COMPONENTS filesystem)
 find_package(glog CONFIG REQUIRED)
 
 include_directories(${Boost_INCLUDE_DIRS})
