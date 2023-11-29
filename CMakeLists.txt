@@ -4,8 +4,10 @@ project(CallCenter)
 
 set(CMAKE_CXX_STANDARD 20)
 
-set(SOURCES src/http_server.cpp src/http_session.cpp src/call_center.cpp src/operator.cpp src/config.cpp)
-set(HEADERS include/http_server.h include/http_session.h include/call_center.h include/operator.h include/config.h include/cdr.h)
+set(SOURCES src/http_server.cpp src/http_session.cpp src/call_center.cpp
+        src/operator.cpp src/call.cpp src/config.cpp)
+set(HEADERS include/http_server.h include/http_session.h include/call_center.h
+        include/operator.h include/call.h include/config.h include/cdr.h)
 
 add_library(CallCenterLib STATIC ${SOURCES} ${HEADERS})
 target_include_directories(CallCenterLib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
