@@ -16,6 +16,9 @@ void HttpServer::startAccept()
 		{
 			auto session = std::make_shared<HttpSession>(std::move(socket), ioContext, callCenter);
 			session->start();
+		}else
+		{
+			LOG_TO_FILE(google::GLOG_ERROR, LOG_FILE) << "Error during create new connection";
 		}
 		startAccept();
 	});
