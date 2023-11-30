@@ -63,3 +63,24 @@ bool CallCenter::isQueueEmpty()
 {
 	return callQueue.empty();
 }
+
+std::string CallCenter::getPhoneNumberFromRequest(const std::string &request)
+{
+	std::string phoneNumber;
+
+	size_t phoneStartPos = request.find("phone=");
+	if (phoneStartPos != std::string::npos)
+	{
+		size_t phoneEndPos = request.find('&', phoneStartPos);
+		if (phoneEndPos == std::string::npos)
+			phoneEndPos = request.find(" HTTP", phoneStartPos);
+
+		if (phoneEndPos != std::string::npos)
+		{
+			phoneStartPos += 6;
+			phoneNumber = request.substr(phoneStartPos, phoneEndPos - phoneStartPos);
+		}
+	}
+
+	return phoneNumber;
+}

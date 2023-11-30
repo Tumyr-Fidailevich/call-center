@@ -15,6 +15,7 @@ public:
 
 	void processCall(std::shared_ptr<Call> &call);
 
+	static std::string getPhoneNumberFromRequest(const std::string &request);
 private:
 
 	bool isQueueOverload();
