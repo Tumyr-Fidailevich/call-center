@@ -22,6 +22,8 @@ private:
 
 	void read();
 
+	void processService(std::size_t length);
+
 	void write(const std::string &message);
 
 	static std::string getMessageForUser(std::shared_ptr<Call> &call);
