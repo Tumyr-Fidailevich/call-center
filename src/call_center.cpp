@@ -43,6 +43,22 @@ bool CallCenter::isQueueOverload()
 	return false;
 }
 
+bool CallCenter::isDuplicated(std::shared_ptr<Call> &targetCall)
+{
+	std::lock_guard lock(callQueueMutex);
+	auto matchIt = std::find_if(callQueue.begin(), callQueue.end(),
+								[&targetCall](auto const call) {
+									return call == targetCall;
+								});
+	if (matchIt == callQueue.end())
+	{
+		LOG_TO_FILE(google::GLOG_WARNING,) << "Phone number " << targetCall->getCDR().phoneNumber
+										   << " is duplicated in the queue";
+		return true;
+	}
+	return false;
+}
+
 bool CallCenter::isQueueEmpty()
 {
 	return callQueue.empty();
