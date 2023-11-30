@@ -24,8 +24,6 @@ private:
 
 	void write(std::shared_ptr<Call> &call);
 
-	std::string processUserRequest();
-
 	static std::string getMessageForUser(std::shared_ptr<Call> &call);
 
 	enum

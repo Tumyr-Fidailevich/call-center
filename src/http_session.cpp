@@ -40,13 +40,6 @@ void HttpSession::write(std::shared_ptr<Call> &call)
 							 });
 }
 
-std::string HttpSession::processUserRequest()
-{
-	//TODO Реализовать функцию, которая преобразовывает пользовательский запрос в телефонный номер
-	return {};
-}
-
-
 std::string HttpSession::getMessageForUser(std::shared_ptr<Call> &call)
 {
 	std::string status{};
