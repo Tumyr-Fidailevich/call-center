@@ -32,6 +32,19 @@ void CallCenter::processCall(std::shared_ptr<Call> &call)
 	}
 }
 
+void CallCenter::removeCall(std::shared_ptr<Call> &call)
+{
+	std::lock_guard lock(callQueueMutex);
+	auto it = std::find(callQueue.begin(), callQueue.end(), call);
+	if (it != callQueue.end())
+	{
+		callQueue.erase(it);
+		LOG_TO_FILE(google::GLOG_INFO, LOG_FILE) << "Call with phone number " << call->getCDR().phoneNumber
+												 << " removed from the queue";
+	}
+
+}
+
 bool CallCenter::isQueueOverload()
 {
 	std::lock_guard lock(callQueueMutex);

@@ -31,6 +31,8 @@ private:
 
 	bool isDuplicated(std::shared_ptr<Call> &call);
 
+	void removeCall(std::shared_ptr<Call> &call);
+
 	std::deque<std::shared_ptr<Call>> callQueue;
 	std::deque<std::shared_ptr<Operator>> freeOperators;
 	std::unique_ptr<Config> config;
