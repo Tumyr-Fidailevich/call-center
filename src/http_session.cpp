@@ -40,6 +40,16 @@ void HttpSession::processService(std::size_t length)
 	}
 }
 
+std::string HttpSession::determineService(const std::string &requestData)
+{
+
+	if (requestData.find("/call-center") != std::string::npos)
+	{
+		return "call-center";
+	}
+	return "";
+}
+
 void HttpSession::write(const std::string &message)
 {
 	boost::asio::async_write(socket, buffer(message),
