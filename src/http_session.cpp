@@ -71,6 +71,17 @@ void HttpSession::processCallCenterService(std::string &request)
 
 }
 
+void HttpSession::writeCall(std::shared_ptr<Call> &call)
+{
+
+	std::string userMessage = CallCenter::getMessageForUser(call);
+	LOG_TO_FILE(google::GLOG_INFO, LOG_FILE) << "User with phone number "
+											 << call->getCDR().phoneNumber
+											 << " has disconnected from the server";
+	LOG_TO_FILE(google::GLOG_INFO, CDR_FILE) << call->getCDR().getFullRepresentation();
+	write(userMessage);
+}
+
 void HttpSession::write(const std::string &message)
 {
 	boost::asio::async_write(socket, buffer(message),

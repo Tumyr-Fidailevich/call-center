@@ -30,6 +30,8 @@ private:
 
 	void write(const std::string &message);
 
+	void writeCall(std::shared_ptr<Call> &call);
+
 	enum
 	{
 		max_length = 1024
