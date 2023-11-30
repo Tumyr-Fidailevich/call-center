@@ -85,6 +85,13 @@ std::string CallCenter::getPhoneNumberFromRequest(const std::string &request)
 	return phoneNumber;
 }
 
+bool CallCenter::isNumberValid(const std::string &phoneNumber)
+{
+	boost::regex phoneRegex("\\+\\d{11}");
+
+	return boost::regex_match(phoneNumber, phoneRegex);
+}
+
 std::string CallCenter::getMessageForUser(std::shared_ptr<Call> &call)
 {
 	std::string status{};

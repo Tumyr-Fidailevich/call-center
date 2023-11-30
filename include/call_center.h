@@ -19,6 +19,8 @@ public:
 
 	static std::string getMessageForUser(std::shared_ptr<Call> &call);
 
+	static bool isNumberValid(const std::string &phoneNumber);
+
 private:
 
 	bool isQueueOverload();
