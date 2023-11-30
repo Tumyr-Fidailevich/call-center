@@ -2,8 +2,9 @@
 #define CALL_CENTER_HTTP_SESSION_H
 
 #include "pch.h"
-#include "operator.h"
 #include "call_center.h"
+#include "call.h"
+
 
 
 using namespace boost::asio;
@@ -23,9 +24,9 @@ private:
 
 	void write(std::shared_ptr<Call> &call);
 
-	std::string processUserData();
+	std::string processUserRequest();
 
-	std::string getMessageForUser(std::shared_ptr<Call> &call);
+	static std::string getMessageForUser(std::shared_ptr<Call> &call);
 
 	enum
 	{

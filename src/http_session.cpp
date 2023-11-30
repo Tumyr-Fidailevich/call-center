@@ -18,7 +18,7 @@ void HttpSession::read()
 						   [this, self](boost::system::error_code ec, std::size_t length) {
 							   if (!ec)
 							   {
-								   std::string phoneNumber = processUserData();
+								   std::string phoneNumber = processUserRequest();
 								   std::shared_ptr<Call> newCall{std::make_shared<Call>(std::string(phoneNumber))};
 								   write(newCall);
 							   }
@@ -40,7 +40,7 @@ void HttpSession::write(std::shared_ptr<Call> &call)
 							 });
 }
 
-std::string HttpSession::processUserData()
+std::string HttpSession::processUserRequest()
 {
 	//TODO Реализовать функцию, которая преобразовывает пользовательский запрос в телефонный номер
 	return {};
