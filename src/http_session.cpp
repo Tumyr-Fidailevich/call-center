@@ -1,4 +1,5 @@
 #include "http_session.h"
+#include "logging_macros.h"
 
 
 HttpSession::HttpSession(tcp::socket _socket, io_context &_ioContext, std::shared_ptr<CallCenter> &_callCenter)
@@ -25,17 +26,16 @@ void HttpSession::read()
 						   });
 }
 
-void HttpSession::write(std::shared_ptr<Call> &call)
+void HttpSession::write(const std::string &message)
 {
-	callCenter->processCall(call);
-	std::string userMassage = getMessageForUser(call);
-
-	boost::asio::async_write(socket, buffer(userMassage),
+	boost::asio::async_write(socket, buffer(message),
 							 [&](boost::system::error_code ec, std::size_t /*length*/) {
 								 if (!ec)
 								 {
-									 // TODO Здесь пользователю приходит ответ в зависимости от статуса
-									 // TODO Нужно писать в логер информацию о вызове
+
+								 }else
+								 {
+									 LOG_TO_FILE(google::GLOG_ERROR, LOG_FILE) << "Error during send message to user";
 								 }
 							 });
 }

@@ -22,7 +22,7 @@ private:
 
 	void read();
 
-	void write(std::shared_ptr<Call> &call);
+	void write(const std::string &message);
 
 	static std::string getMessageForUser(std::shared_ptr<Call> &call);
 
