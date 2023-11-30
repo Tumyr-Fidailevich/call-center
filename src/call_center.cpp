@@ -27,3 +27,19 @@ void CallCenter::processCall(std::shared_ptr<Call> &call)
 		callQueue.push_back(call);
 	}
 }
+
+bool CallCenter::isQueueOverload()
+{
+	std::lock_guard lock(callQueueMutex);
+	if (callQueue.size() >= config->maxQueueSize)
+	{
+		LOG_TO_FILE(google::GLOG_WARNING, LOG_FILE) << "Queue is overloaded";
+		return true;
+	}
+	return false;
+}
+
+bool CallCenter::isQueueEmpty()
+{
+	return callQueue.empty();
+}

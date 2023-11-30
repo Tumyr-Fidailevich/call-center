@@ -17,6 +17,10 @@ public:
 
 private:
 
+	bool isQueueOverload();
+
+	bool isQueueEmpty();
+
 	std::deque<std::shared_ptr<Call>> callQueue;
 	std::deque<std::shared_ptr<Operator>> freeOperators;
 	std::unique_ptr<Config> config;
