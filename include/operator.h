@@ -9,13 +9,11 @@ class Operator
 public:
 	explicit Operator(int _id);
 
-	void setCall(std::shared_ptr<Call> &_call);
-
+	[[nodiscard]] int getId() const;
 
 private:
 
 	int id{0};
-	std::shared_ptr<Call> call = nullptr;
 
 };
 
