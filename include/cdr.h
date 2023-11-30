@@ -23,6 +23,8 @@ struct CDR
 	std::string callId{};
 	std::string phoneNumber{};
 	Status status;
+
+	std::string getFullRepresentation();
 };
 
 #endif
