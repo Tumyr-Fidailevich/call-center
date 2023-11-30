@@ -28,8 +28,6 @@ private:
 
 	void write(const std::string &message);
 
-	static std::string getMessageForUser(std::shared_ptr<Call> &call);
-
 	enum
 	{
 		max_length = 1024
