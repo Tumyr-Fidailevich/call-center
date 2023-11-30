@@ -11,7 +11,7 @@ class Call
 {
 public:
 
-	explicit Call(const std::string &number);
+	explicit Call(boost::asio::io_context &_ioContext, const std::string &number);
 
 	CDR& getCDR();
 
