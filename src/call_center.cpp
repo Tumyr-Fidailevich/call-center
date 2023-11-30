@@ -77,6 +77,30 @@ bool CallCenter::isDuplicated(std::shared_ptr<Call> &targetCall)
 	return false;
 }
 
+[[noreturn]] void CallCenter::processCallQueue()
+{
+	while (true)
+	{
+		if (hasAvailableOperator() && !isQueueEmpty())
+		{
+			std::lock_guard lock(callQueueMutex);
+			auto call = callQueue.front();
+			callQueue.pop_front();
+			call->stopTimer();
+			auto curOperator = freeOperators.front();
+			freeOperators.pop_front();
+			call->setOperator(curOperator);
+			call->getCDR().responseTime = boost::posix_time::second_clock::local_time();
+			call->getCDR().callDuration = getRandomCallDuration(config->minCallDuration, config->maxCallDuration);
+			call->startTimer(
+					call->getCDR().callDuration,
+					[this](std::shared_ptr<Call> call) {
+						this->callReleaseHandler(call);
+					});
+		}
+	}
+}
+
 bool CallCenter::isQueueEmpty()
 {
 	return callQueue.empty();

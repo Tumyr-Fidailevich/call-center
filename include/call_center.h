@@ -27,11 +27,13 @@ private:
 
 	bool isQueueEmpty();
 
+	void removeCall(std::shared_ptr<Call> &call);
+
 	bool hasAvailableOperator();
 
 	bool isDuplicated(std::shared_ptr<Call> &call);
 
-	void removeCall(std::shared_ptr<Call> &call);
+	[[noreturn]] void processCallQueue();
 
 	std::deque<std::shared_ptr<Call>> callQueue;
 	std::deque<std::shared_ptr<Operator>> freeOperators;
