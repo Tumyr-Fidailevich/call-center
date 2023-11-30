@@ -1,4 +1,4 @@
-#include <http_session.h>
+#include "http_session.h"
 
 
 HttpSession::HttpSession(tcp::socket _socket, std::shared_ptr<CallCenter> &_callCenter)
@@ -49,6 +49,34 @@ std::string HttpSession::processUserData()
 
 std::string HttpSession::getMessageForUser(std::shared_ptr<Call> &call)
 {
-	//TODO Реализовать функцию, которая формирует запрос для пользователя
-	return {};
+	std::string status{};
+	switch (call->getCDR().status)
+	{
+		case CDR::Status::OK:
+		{
+			status = "OK";
+			break;
+		}
+		case CDR::Status::Duplicate:
+		{
+			status = "Duplicate";
+			break;
+		}
+		case CDR::Status::Overload:
+		{
+			status = "Overload";
+			break;
+		}
+		case CDR::Status::Timeout:
+		{
+			status = "Timeout";
+			break;
+		}
+		case CDR::Status::Interrupted:
+		{
+			status = "Interrupted";
+			break;
+		}
+	}
+	return std::string{status + " " + call->getCDR().callId};
 }
