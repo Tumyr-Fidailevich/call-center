@@ -26,6 +26,8 @@ private:
 
 	static std::string determineService(const std::string& requestData);
 
+	void processCallCenterService(std::string &request);
+
 	void write(const std::string &message);
 
 	enum

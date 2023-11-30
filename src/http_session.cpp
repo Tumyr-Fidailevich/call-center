@@ -50,6 +50,27 @@ std::string HttpSession::determineService(const std::string &requestData)
 	return "";
 }
 
+void HttpSession::processCallCenterService(std::string &request)
+{
+	std::string phoneNumber = CallCenter::getPhoneNumberFromRequest(request);
+	if (CallCenter::isNumberValid(phoneNumber))
+	{
+		std::shared_ptr<Call> newCall{
+				std::make_shared<Call>(ioContext, std::string(phoneNumber))};
+		newCall->setReleaseCallback([this](std::shared_ptr<Call> &call) { writeCall(call); });
+		callCenter->processCall(newCall);
+		LOG_TO_FILE(google::GLOG_INFO, LOG_FILE) << "User with phone number " << phoneNumber
+												 << " connected to the server";
+	} else
+	{
+		LOG_TO_FILE(google::GLOG_WARNING, LOG_FILE) << "User with invalid phone number " << phoneNumber
+													<< " try to connect";
+		write("Invalid phone number");
+
+	}
+
+}
+
 void HttpSession::write(const std::string &message)
 {
 	boost::asio::async_write(socket, buffer(message),
