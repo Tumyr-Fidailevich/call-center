@@ -27,6 +27,8 @@ private:
 
 	bool isQueueEmpty();
 
+	bool hasAvailableOperator();
+
 	bool isDuplicated(std::shared_ptr<Call> &call);
 
 	std::deque<std::shared_ptr<Call>> callQueue;

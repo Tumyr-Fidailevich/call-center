@@ -43,6 +43,11 @@ bool CallCenter::isQueueOverload()
 	return false;
 }
 
+bool CallCenter::hasAvailableOperator()
+{
+	return !freeOperators.empty();
+}
+
 bool CallCenter::isDuplicated(std::shared_ptr<Call> &targetCall)
 {
 	std::lock_guard lock(callQueueMutex);
