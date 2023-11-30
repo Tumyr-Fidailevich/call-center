@@ -12,14 +12,14 @@ using ip::tcp;
 class HttpServer
 {
 public:
-	HttpServer(io_context &_io_context, short _port);
+	HttpServer(io_context &_ioContext, short _port);
 
 private:
 	io_context &ioContext;
 
 	tcp::acceptor acceptor;
 
-	std::shared_ptr<CallCenter> callCenter;
+	std::shared_ptr<CallCenter> callCenter{};
 
 	void startAccept();
 

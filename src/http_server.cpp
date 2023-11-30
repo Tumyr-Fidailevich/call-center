@@ -1,9 +1,11 @@
 #include "http_server.h"
+#include "logging_macros.h"
+
 
 HttpServer::HttpServer(io_context &_ioContext, short _port) :
 		acceptor(_ioContext, tcp::endpoint(tcp::v4(), _port)), ioContext(_ioContext)
 {
-	std::cout << "Server start working" << std::endl;
+	LOG_TO_FILE(google::GLOG_INFO, LOG_FILE) << "Server is running";
 	startAccept();
 }
 
