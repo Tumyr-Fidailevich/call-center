@@ -24,6 +24,22 @@ void HttpSession::read()
 						   });
 }
 
+void HttpSession::processService(std::size_t length)
+{
+	std::string requestData(data, length);
+
+	std::string service = determineService(requestData);
+	if (service == "call-center")
+	{
+		processCallCenterService(requestData);
+	} else
+	{
+		LOG_TO_FILE(google::GLOG_ERROR, LOG_FILE) << "User with invalid service request " << service
+												  << " try to connect";
+		write("Cant find this service on the server");
+	}
+}
+
 void HttpSession::write(const std::string &message)
 {
 	boost::asio::async_write(socket, buffer(message),
