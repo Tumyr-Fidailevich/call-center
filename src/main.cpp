@@ -1,11 +1,12 @@
 #include <iostream>
 #include "http_server.h"
 
-const int PORT = 1234;
+const short PORT = 1234;
 
 
 int main(int argc, char* argv[])
 {
+	google::InitGoogleLogging("Call center");
 	try
 	{
 		io_context ioContext;
@@ -16,6 +17,6 @@ int main(int argc, char* argv[])
 	{
 		std::cerr << "Exception: " << e.what() << std::endl;
 	}
-
+	google::ShutdownGoogleLogging();
 	return 0;
 }
