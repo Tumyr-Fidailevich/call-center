@@ -11,15 +11,24 @@ class Call
 {
 public:
 
+	using Callback = std::function<void(std::shared_ptr<Call> &)>;
+
 	explicit Call(boost::asio::io_context &_ioContext, const std::string &number);
+
+	void startTimer(const std::chrono::seconds &timeout, const Callback &callback);
 
 	CDR& getCDR();
 
 private:
 
-	std::string setUniqueId();
+	Callback releaseCallback;
+
+	boost::asio::steady_timer timer;
+
+	std::string getUniqueId() const;
+
 	CDR cdr;
-	ptime queueTime;
+
 };
 
 #endif

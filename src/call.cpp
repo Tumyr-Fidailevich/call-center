@@ -14,7 +14,7 @@ CDR &Call::getCDR()
 	return cdr;
 }
 
-std::string Call::setUniqueId()
+std::string Call::getUniqueId() const
 {
 	return {};
 }
