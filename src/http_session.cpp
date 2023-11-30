@@ -20,6 +20,10 @@ void HttpSession::read()
 							   if (!ec)
 							   {
 								   processService(length);
+							   } else
+							   {
+								   LOG_TO_FILE(google::GLOG_ERROR, LOG_FILE) << "Error during reading user message: "
+																			 << ec.what();
 							   }
 						   });
 }
@@ -89,9 +93,10 @@ void HttpSession::write(const std::string &message)
 								 if (!ec)
 								 {
 
-								 }else
+								 } else
 								 {
-									 LOG_TO_FILE(google::GLOG_ERROR, LOG_FILE) << "Error during send message to user";
+									 LOG_TO_FILE(google::GLOG_ERROR, LOG_FILE) << "Error during send message to user: "
+																			   << ec.what();
 								 }
 							 });
 }
