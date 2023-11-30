@@ -18,9 +18,11 @@ public:
 private:
 
 	std::deque<std::shared_ptr<Call>> callQueue;
-	std::deque<Operator*> freeOperators;
-	std::unique_ptr<Config> config = std::make_unique<Config>("../output/config.json");
-	std::mutex mutex;
+	std::deque<std::shared_ptr<Operator>> freeOperators;
+	std::unique_ptr<Config> config;
+	std::mutex callQueueMutex;
+	std::mutex operatorsMutex;
+	std::thread callQueueThread;
 };
 
 #endif
