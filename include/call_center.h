@@ -27,6 +27,8 @@ private:
 
 	bool isQueueEmpty();
 
+	void addCallToQueue(std::shared_ptr<Call> &call);
+
 	void removeCall(std::shared_ptr<Call> &call);
 
 	bool hasAvailableOperator();

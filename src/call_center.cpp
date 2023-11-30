@@ -32,6 +32,19 @@ void CallCenter::processCall(std::shared_ptr<Call> &call)
 	}
 }
 
+void CallCenter::addCallToQueue(std::shared_ptr<Call> &call)
+{
+	{
+		std::lock_guard lock(callQueueMutex);
+		callQueue.push_back(call);
+		LOG_TO_FILE(google::GLOG_INFO, LOG_FILE) << "Call with phone number " << call->getCDR().phoneNumber
+												 << " added to queue";
+	}
+	call->startTimer(config->maxQueueWaitingTime, [this](std::shared_ptr<Call> call) {
+		this->callTimeoutHandler(call);
+	});
+}
+
 void CallCenter::removeCall(std::shared_ptr<Call> &call)
 {
 	std::lock_guard lock(callQueueMutex);
