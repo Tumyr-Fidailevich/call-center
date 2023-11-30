@@ -3,11 +3,14 @@
 
 #include "pch.h"
 
+
 struct Config
 {
-	int maxQueueSize;
-	int maxQueueWaitingTime;
-	int numOfOperators;
+	int maxQueueSize{};
+	std::chrono::seconds maxQueueWaitingTime{0};
+	std::chrono::seconds minCallDuration{0};
+	std::chrono::seconds maxCallDuration{0};
+	int numOfOperators{};
 
 	std::string configFile;
 
