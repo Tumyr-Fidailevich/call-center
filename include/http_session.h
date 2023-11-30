@@ -13,7 +13,7 @@ using ip::tcp;
 class HttpSession : public std::enable_shared_from_this<HttpSession>
 {
 public:
-	HttpSession(tcp::socket _socket, std::shared_ptr<CallCenter> &_callCenter);
+	HttpSession(tcp::socket _socket, io_context &_ioContext, std::shared_ptr<CallCenter> &_callCenter);
 
 	void start();
 
@@ -32,6 +32,7 @@ private:
 		max_length = 1024
 	};
 	char data[max_length];
+	io_context &ioContext;
 	tcp::socket socket;
 	std::shared_ptr<CallCenter> callCenter;
 };

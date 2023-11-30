@@ -1,8 +1,8 @@
 #include "http_session.h"
 
 
-HttpSession::HttpSession(tcp::socket _socket, std::shared_ptr<CallCenter> &_callCenter)
-		: socket(std::move(_socket)), callCenter(_callCenter)
+HttpSession::HttpSession(tcp::socket _socket, io_context &_ioContext, std::shared_ptr<CallCenter> &_callCenter)
+		: socket(std::move(_socket)), ioContext(_ioContext), callCenter(_callCenter)
 {}
 
 
