@@ -16,15 +16,19 @@ CallCenter::CallCenter() : config(std::make_unique<Config>(CONFIG_PATH))
 
 void CallCenter::processCall(std::shared_ptr<Call> &call)
 {
+	LOG_TO_FILE(google::GLOG_INFO, LOG_FILE) << "Call center processing call with number "
+											 << call->getCDR().phoneNumber;
 	if (isQueueOverload())
 	{
-		call->getCDR().status = "Overload";
+		call->getCDR().status = CDR::Status::Overload;
+		call->end();
 	} else if (isDuplicated(call))
 	{
-		call->getCDR().status = "Duplicate";
+		call->getCDR().status = CDR::Status::Duplicate;
+		call->end();
 	} else
 	{
-		callQueue.push_back(call);
+		addCallToQueue(call);
 	}
 }
 
