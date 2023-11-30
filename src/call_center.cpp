@@ -84,3 +84,37 @@ std::string CallCenter::getPhoneNumberFromRequest(const std::string &request)
 
 	return phoneNumber;
 }
+
+std::string CallCenter::getMessageForUser(std::shared_ptr<Call> &call)
+{
+	std::string status{};
+	switch (call->getCDR().status)
+	{
+		case CDR::Status::OK:
+		{
+			status = "OK";
+			break;
+		}
+		case CDR::Status::Duplicate:
+		{
+			status = "Duplicate";
+			break;
+		}
+		case CDR::Status::Overload:
+		{
+			status = "Overload";
+			break;
+		}
+		case CDR::Status::Timeout:
+		{
+			status = "Timeout";
+			break;
+		}
+		case CDR::Status::Interrupted:
+		{
+			status = "Interrupted";
+			break;
+		}
+	}
+	return std::string{status + " " + call->getCDR().callId};
+}
