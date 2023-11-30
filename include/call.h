@@ -3,6 +3,7 @@
 
 
 #include "pch.h"
+#include "operator.h"
 #include "cdr.h"
 
 
