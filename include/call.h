@@ -7,7 +7,7 @@
 #include "cdr.h"
 
 
-class Call
+class Call : public std::enable_shared_from_this<Call>
 {
 public:
 

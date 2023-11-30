@@ -21,3 +21,10 @@ std::string Call::getUniqueId() const
 	boost::hash_combine(hashValue, boost::posix_time::to_iso_string(cdr.connectionTime));
 	return std::to_string(hashValue);
 }
+
+void Call::startTimer(const std::chrono::seconds &timeout, const Callback &callback)
+{
+	auto self(shared_from_this());
+	timer.expires_after(timeout);
+	timer.async_wait([&](const boost::system::error_code &e) { callback(self); });
+}
