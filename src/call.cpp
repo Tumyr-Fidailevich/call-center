@@ -28,3 +28,8 @@ void Call::startTimer(const std::chrono::seconds &timeout, const Callback &callb
 	timer.expires_after(timeout);
 	timer.async_wait([&](const boost::system::error_code &e) { callback(self); });
 }
+
+void Call::stopTimer()
+{
+	timer.cancel();
+}

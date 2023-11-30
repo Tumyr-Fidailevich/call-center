@@ -15,9 +15,11 @@ public:
 
 	explicit Call(boost::asio::io_context &_ioContext, const std::string &number);
 
+	CDR& getCDR();
+
 	void startTimer(const std::chrono::seconds &timeout, const Callback &callback);
 
-	CDR& getCDR();
+	void stopTimer();
 
 private:
 
