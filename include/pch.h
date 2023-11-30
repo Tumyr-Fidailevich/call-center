@@ -18,6 +18,7 @@
 #include "boost/smart_ptr.hpp"
 #include "boost/date_time/posix_time/posix_time.hpp"
 #include "boost/functional/hash.hpp"
+#include "boost/regex.hpp"
 #include "nlohmann/json.hpp"
 #include "glog/logging.h"
 #include "gflags/gflags.h"
