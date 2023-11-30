@@ -16,5 +16,8 @@ CDR &Call::getCDR()
 
 std::string Call::getUniqueId() const
 {
-	return {};
+	size_t hashValue = 0;
+	boost::hash_combine(hashValue, cdr.phoneNumber);
+	boost::hash_combine(hashValue, boost::posix_time::to_iso_string(cdr.connectionTime));
+	return std::to_string(hashValue);
 }
