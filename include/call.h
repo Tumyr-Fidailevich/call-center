@@ -21,6 +21,8 @@ public:
 
 	void stopTimer();
 
+	void setReleaseCallback(const Callback &callback);
+
 private:
 
 	Callback releaseCallback;

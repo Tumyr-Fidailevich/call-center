@@ -29,6 +29,11 @@ void Call::startTimer(const std::chrono::seconds &timeout, const Callback &callb
 	timer.async_wait([&](const boost::system::error_code &e) { callback(self); });
 }
 
+void Call::setReleaseCallback(const Callback &callback)
+{
+	releaseCallback = callback;
+}
+
 void Call::stopTimer()
 {
 	timer.cancel();
