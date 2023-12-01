@@ -46,3 +46,8 @@ void Call::setOperator(std::shared_ptr<Operator> &_op)
 	LOG_TO_FILE(google::GLOG_INFO, LOG_FILE) << "Operator #" << op->getId()
 											 << " is connected to user with phone number " << cdr.phoneNumber;
 }
+
+std::shared_ptr<Operator> Call::getOperator()
+{
+	return op;
+}

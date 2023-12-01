@@ -25,6 +25,8 @@ public:
 
 	void setOperator(std::shared_ptr<Operator> &_op);
 
+	std::shared_ptr<Operator> getOperator();
+
 private:
 
 	Callback releaseCallback;
@@ -34,6 +36,8 @@ private:
 	std::string getUniqueId() const;
 
 	CDR cdr;
+
+	std::shared_ptr<Operator> op;
 
 };
 
