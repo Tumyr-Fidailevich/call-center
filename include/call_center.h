@@ -39,6 +39,10 @@ private:
 
 	bool isDuplicated(std::shared_ptr<Call> &call);
 
+	void callTimeoutHandler(std::shared_ptr<Call> &call);
+
+	void callReleaseHandler(std::shared_ptr<Call> &call);
+
 	[[noreturn]] void processCallQueue();
 
 	std::deque<std::shared_ptr<Call>> callQueue;

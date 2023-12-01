@@ -16,6 +16,12 @@ CallCenter::CallCenter() : config(std::make_unique<Config>(CONFIG_PATH))
 	callQueueThread = std::thread(&CallCenter::processCallQueue, this);
 }
 
+CallCenter::~CallCenter()
+{
+	if (callQueueThread.joinable()) callQueueThread.join();
+}
+
+
 void CallCenter::processCall(std::shared_ptr<Call> &call)
 {
 	LOG_TO_FILE(google::GLOG_INFO, LOG_FILE) << "Call center processing call with number "
@@ -45,6 +51,28 @@ void CallCenter::addCallToQueue(std::shared_ptr<Call> &call)
 	call->startTimer(config->maxQueueWaitingTime, [this](std::shared_ptr<Call> call) {
 		this->callTimeoutHandler(call);
 	});
+}
+
+void CallCenter::callTimeoutHandler(std::shared_ptr<Call> &call)
+{
+	call->getCDR().status = CDR::Status::Timeout;
+	removeCall(call);
+	LOG_TO_FILE(google::GLOG_INFO, LOG_FILE) << "Call with phone number " << call->getCDR().phoneNumber
+											 << " timeout";
+	call->end();
+}
+
+void CallCenter::callReleaseHandler(std::shared_ptr<Call> &call)
+{
+
+	LOG_TO_FILE(google::GLOG_INFO, LOG_FILE) << "Operator #" << call->getOperator()->getId()
+											 << " ended the conversation with user number "
+											 << call->getCDR().phoneNumber;
+	call->getCDR().status = CDR::Status::OK;
+	freeOperators.push_back(call->getOperator());
+	LOG_TO_FILE(google::GLOG_INFO, LOG_FILE) << "Operator #" << call->getOperator()->getId()
+											 << " was returned to the queue";
+	call->end();
 }
 
 void CallCenter::removeCall(std::shared_ptr<Call> &call)
