@@ -12,6 +12,8 @@ CallCenter::CallCenter() : config(std::make_unique<Config>(CONFIG_PATH))
 		LOG_TO_FILE(google::GLOG_INFO, LOG_FILE) << "Operator with id " << newOperator->getId() << " initialized";
 		freeOperators.emplace_back(newOperator);
 	}
+
+	callQueueThread = std::thread(&CallCenter::processCallQueue, this);
 }
 
 void CallCenter::processCall(std::shared_ptr<Call> &call)
