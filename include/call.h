@@ -27,6 +27,8 @@ public:
 
 	std::shared_ptr<Operator> getOperator();
 
+	bool operator==(const Call &other) const;
+
 private:
 
 	Callback releaseCallback;

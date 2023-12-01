@@ -51,3 +51,8 @@ std::shared_ptr<Operator> Call::getOperator()
 {
 	return op;
 }
+
+bool Call::operator==(const Call &other) const
+{
+	return this->cdr.phoneNumber == other.cdr.phoneNumber;
+}
