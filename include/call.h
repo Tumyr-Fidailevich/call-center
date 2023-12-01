@@ -23,6 +23,8 @@ public:
 
 	void setReleaseCallback(const Callback &callback);
 
+	void setOperator(std::shared_ptr<Operator> &_op);
+
 private:
 
 	Callback releaseCallback;
