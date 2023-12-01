@@ -39,6 +39,13 @@ void Call::stopTimer()
 	timer.cancel();
 }
 
+void Call::end()
+{
+	auto self(shared_from_this());
+	cdr.disconnectTime = boost::posix_time::second_clock::local_time();
+	releaseCallback(self);
+}
+
 void Call::setOperator(std::shared_ptr<Operator> &_op)
 {
 	op = _op;

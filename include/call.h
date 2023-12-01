@@ -19,6 +19,8 @@ public:
 
 	void startTimer(const std::chrono::seconds &timeout, const Callback &callback);
 
+	void end();
+
 	void stopTimer();
 
 	void setReleaseCallback(const Callback &callback);
