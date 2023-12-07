@@ -19,7 +19,7 @@ private:
 
 	tcp::acceptor acceptor;
 
-	std::shared_ptr<CallCenter> callCenter{};
+	std::shared_ptr<CallCenter> callCenter;
 
 	void startAccept();
 

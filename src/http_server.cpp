@@ -1,11 +1,11 @@
 #include "http_server.h"
-#include "logging_macros.h"
 
 
 HttpServer::HttpServer(io_context &_ioContext, short _port) :
 		acceptor(_ioContext, tcp::endpoint(tcp::v4(), _port)), ioContext(_ioContext)
 {
-	LOG_TO_FILE(google::GLOG_INFO, LOG_FILE) << "Server is running";
+	LOG(INFO) << "Server is running";
+	callCenter = std::make_shared<CallCenter>();
 	startAccept();
 }
 
@@ -15,10 +15,11 @@ void HttpServer::startAccept()
 		if (!ec)
 		{
 			auto session = std::make_shared<HttpSession>(std::move(socket), ioContext, callCenter);
+			LOG(INFO) << "Creating new session";
 			session->start();
 		}else
 		{
-			LOG_TO_FILE(google::GLOG_ERROR, LOG_FILE) << "Error during create new connection";
+			LOG(ERROR) << "Error during creating new connection";
 		}
 		startAccept();
 	});
