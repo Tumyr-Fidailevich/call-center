@@ -6,7 +6,9 @@ const short PORT = 1234;
 
 int main(int argc, char* argv[])
 {
-	google::InitGoogleLogging("Call center");
+	setlocale(LC_ALL, "Russian");
+	google::InitGoogleLogging(argv[0]);
+	FLAGS_log_dir = "../output";
 	try
 	{
 		io_context ioContext;
