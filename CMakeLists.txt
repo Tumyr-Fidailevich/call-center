@@ -29,5 +29,6 @@ set(TEST_SOURCES test/test.cpp)
 
 add_executable(call_center_test ${TEST_SOURCES})
 find_package(GTest REQUIRED)
-target_link_libraries(call_center_test PRIVATE CallCenterLib GTest::gmock GTest::gtest GTest::gmock_main GTest::gtest_main)
+target_link_libraries(call_center_test PRIVATE CallCenterLib ${Boost_LIBRARIES} glog::glog
+        nlohmann_json::nlohmann_json GTest::gmock GTest::gtest GTest::gmock_main GTest::gtest_main)
 add_test(NAME CallCenterTest COMMAND call_center_test)

@@ -1,0 +1,5 @@
+Log file created at: 2023/12/07 16:55:16
+Running on machine: LAPTOP-OV3QI5SV
+Running duration (h:mm:ss): 0:00:00
+Log line format: [IWEF]yyyymmdd hh:mm:ss.uuuuuu threadid file:line] msg
+I20231207 16:55:16.928381 12756 http_server.cpp:7] Server is running
