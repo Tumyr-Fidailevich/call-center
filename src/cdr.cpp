@@ -1,5 +1,7 @@
 #include "cdr.h"
 
+std::mutex CDR_mutex;
+
 std::string CDR::getFullRepresentation()
 {
 	std::ostringstream fullRepresentation;
@@ -44,4 +46,23 @@ std::string CDR::getFullRepresentation()
 	}
 
 	return fullRepresentation.str();
+}
+
+void CDR::write()
+{
+	std::string repr = getFullRepresentation();
+	std::lock_guard lock(CDR_mutex);
+	std::ofstream cdrFile("../output/cdr.txt", std::ios::app);
+
+	if(cdrFile.is_open())
+	{
+		cdrFile << repr << std::endl;
+
+		cdrFile.close();
+
+		LOG(INFO) << "CDR write successfully";
+	}else
+	{
+		LOG(ERROR) << "Cant open CDR destination file";
+	}
 }

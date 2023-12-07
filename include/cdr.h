@@ -25,6 +25,8 @@ struct CDR
 	Status status;
 
 	std::string getFullRepresentation();
+
+	void write();
 };
 
 #endif
