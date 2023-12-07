@@ -11,7 +11,7 @@ class Call : public std::enable_shared_from_this<Call>
 {
 public:
 
-	using Callback = std::function<void(std::shared_ptr<Call> &)>;
+	using Callback = std::function<void(std::shared_ptr<Call>)>;
 
 	explicit Call(boost::asio::io_context &_ioContext, const std::string &number);
 
