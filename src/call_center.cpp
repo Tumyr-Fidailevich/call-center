@@ -1,5 +1,4 @@
 #include "call_center.h"
-#include "logging_macros.h"
 
 std::string CONFIG_PATH = "../output/config.json";
 
@@ -9,23 +8,17 @@ CallCenter::CallCenter() : config(std::make_unique<Config>(CONFIG_PATH))
 	for (std::size_t i = 1; i <= config->numOfOperators; i++)
 	{
 		auto newOperator = std::make_shared<Operator>(i);
-		LOG_TO_FILE(google::GLOG_INFO, LOG_FILE) << "Operator with id " << newOperator->getId() << " initialized";
+		LOG(INFO) << "Operator with id " << newOperator->getId() << " initialized";
 		freeOperators.emplace_back(newOperator);
 	}
-
 	callQueueThread = std::thread(&CallCenter::processCallQueue, this);
-}
-
-CallCenter::~CallCenter()
-{
-	if (callQueueThread.joinable()) callQueueThread.join();
+	callQueueThread.detach();
 }
 
 
 void CallCenter::processCall(std::shared_ptr<Call> &call)
 {
-	LOG_TO_FILE(google::GLOG_INFO, LOG_FILE) << "Call center processing call with number "
-											 << call->getCDR().phoneNumber;
+	LOG(INFO) << "Call center processing call with number " << call->getCDR().phoneNumber;
 	if (isQueueOverload())
 	{
 		call->getCDR().status = CDR::Status::Overload;
@@ -40,38 +33,33 @@ void CallCenter::processCall(std::shared_ptr<Call> &call)
 	}
 }
 
-void CallCenter::addCallToQueue(std::shared_ptr<Call> &call)
+void CallCenter::addCallToQueue(std::shared_ptr<Call> &newCall)
 {
-	{
-		std::lock_guard lock(callQueueMutex);
-		callQueue.push_back(call);
-		LOG_TO_FILE(google::GLOG_INFO, LOG_FILE) << "Call with phone number " << call->getCDR().phoneNumber
-												 << " added to queue";
-	}
-	call->startTimer(config->maxQueueWaitingTime, [this](std::shared_ptr<Call> call) {
+	newCall->startTimer(config->maxQueueWaitingTime, [this](std::shared_ptr<Call> call) {
 		this->callTimeoutHandler(call);
 	});
+	{
+		std::lock_guard lock(callQueueMutex);
+		callQueue.push_back(newCall);
+		LOG(INFO) << "Call with phone number " << newCall->getCDR().phoneNumber << " added to queue";
+	}
 }
 
 void CallCenter::callTimeoutHandler(std::shared_ptr<Call> &call)
 {
 	call->getCDR().status = CDR::Status::Timeout;
 	removeCall(call);
-	LOG_TO_FILE(google::GLOG_INFO, LOG_FILE) << "Call with phone number " << call->getCDR().phoneNumber
-											 << " timeout";
+	LOG(INFO) << "Call with phone number " << call->getCDR().phoneNumber << " timeout";
 	call->end();
 }
 
 void CallCenter::callReleaseHandler(std::shared_ptr<Call> &call)
 {
-
-	LOG_TO_FILE(google::GLOG_INFO, LOG_FILE) << "Operator #" << call->getOperator()->getId()
-											 << " ended the conversation with user number "
-											 << call->getCDR().phoneNumber;
+	LOG(INFO) << "Operator #" << call->getOperator()->getId() << " ended the conversation with user number "
+			  << call->getCDR().phoneNumber;
 	call->getCDR().status = CDR::Status::OK;
 	freeOperators.push_back(call->getOperator());
-	LOG_TO_FILE(google::GLOG_INFO, LOG_FILE) << "Operator #" << call->getOperator()->getId()
-											 << " was returned to the queue";
+	LOG(INFO) << "Operator #" << call->getOperator()->getId() << " was returned to the queue";
 	call->end();
 }
 
@@ -82,8 +70,7 @@ void CallCenter::removeCall(std::shared_ptr<Call> &call)
 	if (it != callQueue.end())
 	{
 		callQueue.erase(it);
-		LOG_TO_FILE(google::GLOG_INFO, LOG_FILE) << "Call with phone number " << call->getCDR().phoneNumber
-												 << " removed from the queue";
+		LOG(INFO) << "Call with phone number " << call->getCDR().phoneNumber << " removed from the queue";
 	}
 
 }
@@ -93,7 +80,7 @@ bool CallCenter::isQueueOverload()
 	std::lock_guard lock(callQueueMutex);
 	if (callQueue.size() >= config->maxQueueSize)
 	{
-		LOG_TO_FILE(google::GLOG_WARNING, LOG_FILE) << "Queue is overloaded";
+		LOG(WARNING) << "Queue is overloaded";
 		return true;
 	}
 	return false;
@@ -111,10 +98,9 @@ bool CallCenter::isDuplicated(std::shared_ptr<Call> &targetCall)
 								[&targetCall](auto const call) {
 									return call == targetCall;
 								});
-	if (matchIt == callQueue.end())
+	if (matchIt != callQueue.end())
 	{
-		LOG_TO_FILE(google::GLOG_WARNING,) << "Phone number " << targetCall->getCDR().phoneNumber
-										   << " is duplicated in the queue";
+		LOG(WARNING) << "Phone number " << targetCall->getCDR().phoneNumber << " is duplicated in the queue";
 		return true;
 	}
 	return false;
@@ -131,6 +117,7 @@ bool CallCenter::isDuplicated(std::shared_ptr<Call> &targetCall)
 			callQueue.pop_front();
 			call->stopTimer();
 			auto curOperator = freeOperators.front();
+			freeOperators.pop_front();
 			freeOperators.pop_front();
 			call->setOperator(curOperator);
 			call->getCDR().responseTime = boost::posix_time::second_clock::local_time();
@@ -152,21 +139,12 @@ bool CallCenter::isQueueEmpty()
 std::string CallCenter::getPhoneNumberFromRequest(const std::string &request)
 {
 	std::string phoneNumber;
-
-	size_t phoneStartPos = request.find("phone=");
-	if (phoneStartPos != std::string::npos)
+	boost::regex phone_pattern("\\+\\d{11}");
+	boost::smatch match;
+	if (boost::regex_search(request, match, phone_pattern))
 	{
-		size_t phoneEndPos = request.find('&', phoneStartPos);
-		if (phoneEndPos == std::string::npos)
-			phoneEndPos = request.find(" HTTP", phoneStartPos);
-
-		if (phoneEndPos != std::string::npos)
-		{
-			phoneStartPos += 6;
-			phoneNumber = request.substr(phoneStartPos, phoneEndPos - phoneStartPos);
-		}
+		phoneNumber = match[0];
 	}
-
 	return phoneNumber;
 }
 
