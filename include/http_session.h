@@ -28,15 +28,17 @@ private:
 
 	void processCallCenterService(std::string &request);
 
-	void write(const std::string &message);
+	void write(std::size_t length);
 
 	void writeCall(std::shared_ptr<Call> &call);
+
+	void writeError(const std::string& body);
 
 	enum
 	{
 		max_length = 1024
 	};
-	char data[max_length];
+	std::string data;
 	io_context &ioContext;
 	tcp::socket socket;
 	std::shared_ptr<CallCenter> callCenter;
