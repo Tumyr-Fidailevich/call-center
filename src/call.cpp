@@ -1,5 +1,4 @@
 #include "call.h"
-#include "logging_macros.h"
 
 
 Call::Call(boost::asio::io_context &_ioContext, const std::string &number) : timer(_ioContext)
@@ -26,7 +25,10 @@ void Call::startTimer(const std::chrono::seconds &timeout, const Callback &callb
 {
 	auto self(shared_from_this());
 	timer.expires_after(timeout);
-	timer.async_wait([&](const boost::system::error_code &e) { callback(self); });
+	timer.async_wait([self, callback](const boost::system::error_code &e)
+	{
+		callback(self);
+	});
 }
 
 void Call::setReleaseCallback(const Callback &callback)
@@ -50,8 +52,7 @@ void Call::setOperator(std::shared_ptr<Operator> &_op)
 {
 	op = _op;
 	cdr.operatorId = op->getId();
-	LOG_TO_FILE(google::GLOG_INFO, LOG_FILE) << "Operator #" << op->getId()
-											 << " is connected to user with phone number " << cdr.phoneNumber;
+	LOG(INFO) << "Operator #" << op->getId() << " is connected to user with phone number " << cdr.phoneNumber;
 }
 
 std::shared_ptr<Operator> Call::getOperator()
