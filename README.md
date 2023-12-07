@@ -37,6 +37,17 @@
 4. Timeout - истекло время ожидания подключения к оператору в очереди.
 5. Interrupted - звонок прерван по инициативе пользователя.
 
+## Конфигурация ##
+Настройка конфигурации производится в папке output в корневой директории проекта в файле config.json.
+Пример конфигурации:
+{
+"max_queue_length" : 3,
+"queue_waiting_time" : 60,
+"number_of_operators" : 2,
+"min_call_duration" : 5,
+"max_call_duration" : 10
+}
+
 ## Call Detail Record (CDR) ##
 
 1. Время подключения
